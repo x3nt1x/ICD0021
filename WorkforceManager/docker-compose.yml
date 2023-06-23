@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  wfm-app:
+    container_name: wfm-app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - wfm-db
+    environment:
+      - ConnectionStrings:DefaultConnection=Host=wfm-db:5432;Database=wfm-db;Username=postgres;Password=postgres
+  
+  wfm-db:
+    container_name: wfm-db
+    image: "postgres:15.2-bullseye"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - "5445:5432"
+    volumes:
+      - wfm-db-postgres-volume:/var/lib/postgresql/data
+
+volumes:
+  wfm-db-postgres-volume:

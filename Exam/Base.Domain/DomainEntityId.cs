@@ -1,0 +1,13 @@
+﻿using Base.Contracts.Domain;
+
+namespace Base.Domain;
+
+public class DomainEntityId<TKey> : IDomainEntityId<TKey>
+    where TKey: struct, IEquatable<TKey>
+{
+    public TKey Id { get; set; }
+}
+
+public abstract class DomainEntityId : DomainEntityId<Guid>,  IDomainEntityId
+{
+}
